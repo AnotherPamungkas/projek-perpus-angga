@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Buku extends Model
 {
+    protected $table = 'buku'; 
     protected $fillable = [
         'cover', 
         'judul_buku',
@@ -17,4 +18,15 @@ class Buku extends Model
         'deskripsi',
         'status'
     ];
+
+    public function kategori()
+{
+    return $this->belongsTo(Kategori::class);
+}
+
+public function peminjaman() {
+    return $this->hasMany(Peminjaman::class, 'buku_id');
+}
+
+
 }
