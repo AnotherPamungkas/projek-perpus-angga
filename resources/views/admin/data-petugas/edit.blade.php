@@ -1,52 +1,62 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Edit Petugas
-        </h2>
+        Edit Petugas
     </x-slot>
 
-    <div class="py-6">
+    <div class="py-8">
         <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
 
-            <div class="bg-white p-6 shadow rounded">
+            <div class="bg-white shadow-xl rounded-2xl p-8">
+
                 <form action="{{ route('admin.data-petugas.update', $petugas->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-4">
-                        <label class="block mb-1">Nama</label>
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium mb-1 text-[#09637E]">Nama</label>
                         <input type="text" name="nama"
-                               class="w-full border rounded px-3 py-2"
-                               value="{{ $petugas->nama }}" required>
+                               value="{{ $petugas->nama }}"
+                               class="w-full border border-[#7AB2B2] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#088395]"
+                               required>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block mb-1">Email</label>
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium mb-1 text-[#09637E]">Username</label>
+                        <input type="text" name="username"
+                               value="{{ $petugas->username }}"
+                               class="w-full border border-[#7AB2B2] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#088395]"
+                               required>
+                    </div>
+
+                    <div class="mb-5">
+                        <label class="block text-sm font-medium mb-1 text-[#09637E]">Email</label>
                         <input type="email" name="email"
-                               class="w-full border rounded px-3 py-2"
-                               value="{{ $petugas->email }}" required>
+                               value="{{ $petugas->email }}"
+                               class="w-full border border-[#7AB2B2] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#088395]"
+                               required>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block mb-1">
-                            Password <span class="text-sm text-gray-500">(kosongkan jika tidak diubah)</span>
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium mb-1 text-[#09637E]">
+                            Password <span class="text-gray-400 text-xs">(Kosongkan jika tidak diubah)</span>
                         </label>
                         <input type="password" name="password"
-                               class="w-full border rounded px-3 py-2">
+                               class="w-full border border-[#7AB2B2] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#088395]">
                     </div>
 
-                    <div class="flex justify-end space-x-2">
+                    <div class="flex justify-end gap-3">
                         <a href="{{ route('admin.data-petugas.index') }}"
-                           class="px-4 py-2 bg-gray-500 text-white rounded">
+                           class="bg-gray-400 hover:bg-gray-500 text-white px-5 py-2 rounded-lg transition">
                             Kembali
                         </a>
-                        <button class="px-4 py-2 bg-green-600 text-white rounded">
+
+                        <button class="bg-[#09637E] hover:bg-[#088395] text-white px-6 py-2 rounded-lg shadow transition">
                             Update
                         </button>
                     </div>
+
                 </form>
             </div>
-
         </div>
     </div>
 </x-app-layout>

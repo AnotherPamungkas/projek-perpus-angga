@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('peminjaman', function (Blueprint $table) {
             $table->id();
             $table->foreignId('buku_id')->constrained('buku', 'id');
-            $table->foreignId('siswa_id')->constrained('users', 'id');
+            $table->foreignId('peminjam_id')->constrained('users', 'id');
             $table->date('tanggal_pinjam');
             $table->date('tanggal_jatuh_tempo');
             $table->date('tanggal_kembali')->nullable();

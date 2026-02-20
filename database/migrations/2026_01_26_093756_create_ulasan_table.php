@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('ulasan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('buku_id')->constrained('buku', 'id');
-            $table->foreignId('siswa_id')->constrained('users', 'id');
+            $table->foreignId('peminjam_id')->constrained('users', 'id');
             $table->text('isi_ulasan');
             $table->integer('rating');
             $table->timestamps();

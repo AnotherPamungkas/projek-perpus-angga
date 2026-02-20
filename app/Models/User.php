@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
+/**
+ * @property \Illuminate\Database\Eloquent\Collection $favoritBuku
+ */
 class User extends Authenticatable
 {
     use HasFactory, Notifiable;
@@ -18,6 +22,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'nama',
+        'username',
         'email',
         'password',
         'role'
@@ -46,7 +51,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function peminjaman() {
-        return $this->hasMany(Peminjaman::class, 'siswa_id');
+    public function profil()
+    {
+        return $this->hasOne(Profil::class, 'peminjam_id');
+    }
+
+    public function peminjaman()
+    {
+        return $this->hasMany(Peminjaman::class, 'peminjam_id');
+    }
+
+    public function favoritBuku()
+    {
+        return $this->belongsToMany(
+            \App\Models\Buku::class,
+            'buku_favorit',
+            'peminjam_id',
+            'buku_id'
+        );
+    }
+
+    public function ulasan()
+    {
+        return $this->hasMany(Ulasan::class, 'peminjam_id');
     }
 }

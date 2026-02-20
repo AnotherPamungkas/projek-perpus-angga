@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
         return match (Auth::user()->role) {
             'admin' => redirect()->route('admin.dashboard'),
             'petugas' => redirect()->route('petugas.dashboard'),
-            'siswa' => redirect()->route('siswa.dashboard')
+            'peminjam' => redirect()->route('peminjam.dashboard')
         };
     }
 
@@ -46,6 +46,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('login');
+        return redirect()->route('login');
     }
 }

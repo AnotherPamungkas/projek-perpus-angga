@@ -1,67 +1,103 @@
 <x-app-layout>
-    <div class="p-6">
-        <h1 class="text-2xl font-bold mb-4">Riwayat Peminjaman</h1>
+    <x-slot name="header">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-[#09637E] leading-tight">
+                Data Riwayat Peminjaman
+            </h2>
 
-        {{-- Filter --}}
-        <form method="GET" class="mb-4">
-            <label class="mr-2 font-semibold">Filter Status:</label>
-            <select name="status" onchange="this.form.submit()" class="border rounded px-3 py-2">
-                <option value="menunggu_validasi" {{ $status == 'menunggu_validasi' ? 'selected' : '' }}>
-                    Menunggu Validasi
-                </option>
-                <option value="disetujui" {{ $status == 'disetujui' ? 'selected' : '' }}>
-                    Disetujui
-                </option>
-                <option value="ditolak" {{ $status == 'ditolak' ? 'selected' : '' }}>
-                    Ditolak
-                </option>
-            </select>
-        </form>
+            <a href="{{ route('admin.riwayat-peminjaman.export', ['search' => $search]) }}"
+               class="bg-[#09637E] hover:bg-[#088395] text-white px-5 py-2 rounded-lg shadow transition">
+                Export Excel
+            </a>
+        </div>
+    </x-slot>
 
-        {{-- Table --}}
-        <table class="w-full border">
-            <thead class="bg-gray-100">
-                <tr>
-                    <th class="border px-4 py-2">Peminjam</th>
-                    <th class="border px-4 py-2">Judul Buku</th>
-                    <th class="border px-4 py-2">Tanggal Pinjam</th>
-                    <th class="border px-4 py-2">Tanggal Kembali</th>
-                    <th class="border px-4 py-2">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @forelse ($dataPeminjaman as $item)
-                    <tr>
-                        <td class="border px-4 py-2">
-                            {{ $item->user->name ?? '-' }}
-                        </td>
-                        <td class="border px-4 py-2">
-                            {{ $item->buku->judul_buku ?? '-' }}
-                        </td>
-                        <td class="border px-4 py-2">
-                            {{ $item->tanggal_pinjam }}
-                        </td>
-                        <td class="border px-4 py-2">
-                            {{ $item->tanggal_kembali ?? '-' }}
-                        </td>
-                        <td class="border px-4 py-2">
-                            @if ($item->status == 'menunggu_validasi')
-                                <span class="text-yellow-600 font-semibold">Menunggu</span>
-                            @elseif ($item->status == 'disetujui')
-                                <span class="text-green-600 font-semibold">Disetujui</span>
-                            @else
-                                <span class="text-red-600 font-semibold">Ditolak</span>
-                            @endif
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-4 text-gray-500">
-                            Data peminjaman tidak ditemukan
-                        </td>
-                    </tr>
-                @endforelse
-            </tbody>
-        </table>
+    <div class="py-10 bg-[#EBF4F6] min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+            {{-- Search --}}
+            <div class="mb-6">
+                <form method="GET" action="{{ route('admin.riwayat-peminjaman') }}">
+                    <div class="flex gap-3">
+                        <input type="text"
+                               name="search"
+                               value="{{ $search }}"
+                               placeholder="Cari judul buku / nama peminjam..."
+                               class="w-full rounded-lg border border-[#7AB2B2] px-4 py-2 focus:ring-2 focus:ring-[#088395] focus:outline-none text-sm">
+
+                        <button class="bg-[#09637E] hover:bg-[#088395] text-white px-6 py-2 rounded-lg shadow">
+                            Cari
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            {{-- Table --}}
+            <div class="bg-white shadow-xl rounded-2xl overflow-hidden">
+
+                <table class="min-w-full text-sm text-gray-700">
+
+                    <thead class="bg-[#09637E] text-white">
+                        <tr>
+                            <th class="px-6 py-3 text-left">Buku</th>
+                            <th class="px-6 py-3 text-left">Peminjam</th>
+                            <th class="px-6 py-3 text-left">Tanggal Pinjam</th>
+                            <th class="px-6 py-3 text-left">Tanggal Kembali</th>
+                            <th class="px-6 py-3 text-left">Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-100">
+
+                        @forelse($riwayat as $item)
+                            <tr class="hover:bg-gray-50">
+
+                                <td class="px-6 py-4">
+                                    {{ $item->buku->judul_buku }}
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <div class="font-medium">
+                                        {{ $item->peminjam->nama }}
+                                    </div>
+                                    <div class="text-xs text-gray-500">
+                                        {{ $item->peminjam->username }}
+                                    </div>
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    {{ \Carbon\Carbon::parse($item->tanggal_pinjam)->format('d M Y') }}
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    {{ \Carbon\Carbon::parse($item->tanggal_kembali)->format('d M Y') }}
+                                </td>
+
+                                <td class="px-6 py-4">
+                                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-semibold">
+                                        Dikembalikan
+                                    </span>
+                                </td>
+
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="text-center py-10 text-gray-500">
+                                    Data riwayat belum tersedia.
+                                </td>
+                            </tr>
+                        @endforelse
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            {{-- Pagination --}}
+            <div class="mt-6">
+                {{ $riwayat->links() }}
+            </div>
+
+        </div>
     </div>
 </x-app-layout>

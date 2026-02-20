@@ -21,7 +21,7 @@ return new class extends Migration
             $table->foreignId('kategori_id')->constrained('kategori', 'id');
             $table->integer('jumlah_buku');
             $table->string('deskripsi');
-            $table->enum('status', ['disetujui', 'ditolak', 'menunggu_validasi']);
+            $table->enum('status', ['tersedia', 'ditolak', 'menunggu_validasi']);
             $table->timestamps();
         });
     }

@@ -10,10 +10,13 @@ class DataKategoriController extends Controller
 {
     // tampilkan data kategori
     public function index()
-    {
-        $kategori = Kategori::all();
-        return view('admin.data-kategori.index', compact('kategori'));
-    }
+{
+    $kategori = Kategori::withCount('buku')
+        ->orderBy('nama_kategori')
+        ->get();
+
+    return view('admin.data-kategori.index', compact('kategori'));
+}
 
     // form tambah kategori
     public function create()
@@ -62,11 +65,20 @@ class DataKategoriController extends Controller
 
     // hapus kategori
     public function destroy($id)
-    {
-        $kategori = Kategori::findOrFail($id);
-        $kategori->delete();
+{
+    $kategori = Kategori::withCount('buku')->findOrFail($id);
 
-        return redirect()->route('admin.data-kategori.index')
-            ->with('success', 'Kategori berhasil dihapus');
+    if ($kategori->buku_count > 0) {
+        return redirect()
+            ->route('admin.data-kategori.index')
+            ->with('success', 'Kategori tidak bisa dihapus karena sedang digunakan.');
     }
+
+    $kategori->delete();
+
+    return redirect()
+        ->route('admin.data-kategori.index')
+        ->with('success', 'Kategori berhasil dihapus.');
+}
+
 }

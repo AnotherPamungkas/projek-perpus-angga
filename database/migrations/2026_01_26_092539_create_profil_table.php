@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('profil', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('siswa_id')->constrained('users', 'id');
+            $table->foreignId('peminjam_id')->constrained('users', 'id');
             $table->string('nomor_telepon')->nullable();
             $table->string('alamat')->nullable();
             $table->timestamps();
