@@ -57,7 +57,7 @@ class DataBukuController extends Controller
         $coverPath = null;
 
         if ($request->hasFile('cover')) {
-            $coverPath = $request->file('cover')->store('covers', 'public');
+            $coverPath = $request->file('cover')->store('cover-buku', 'public');
         }
 
         Buku::create([

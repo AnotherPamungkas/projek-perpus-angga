@@ -14,8 +14,6 @@
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
         <h1 class="text-xl font-bold text-[#09637E]">MyLibrary</h1>
         <div class="space-x-6 text-sm">
-            <a href="#" class="hover:text-[#088395] transition">Beranda</a>
-            <a href="#" class="hover:text-[#088395] transition">Koleksi</a>
             <a href="{{ route('login') }}" class="text-[#088395] font-medium hover:text-[#09637E]">Login</a>
             <a href="{{ route('register') }}"
                class="bg-[#088395] text-white px-4 py-2 rounded-xl hover:bg-[#09637E] transition">
