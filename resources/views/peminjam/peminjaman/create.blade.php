@@ -7,32 +7,41 @@
     @vite('resources/css/app.css')
 </head>
 
-<body style="background-color: #f0f4f8;">
+<body class="bg-[#F4F4F2] text-[#3D3D3B]">
 
     {{-- CONTENT --}}
     <div class="max-w-6xl mx-auto px-6 py-8">
 
-        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+        {{-- MAIN CARD --}}
+        <div class="bg-white rounded-3xl shadow-sm border border-[#BBBFCA] overflow-hidden">
 
-            {{-- HEADER (sama persis dengan detail.blade.php) --}}
-            <div class="px-8 py-5 flex items-center justify-between"
-                style="background: linear-gradient(135deg, #1557b0 0%, #1a73e8 55%, #4da3ff 100%);">
+            {{-- HEADER --}}
+            <div class="px-8 py-5 bg-[#3D3D3B] flex items-center justify-between">
 
+                {{-- Back Button --}}
                 <a href="{{ route('peminjam.buku.detail', $buku->id) }}"
-                    class="flex items-center gap-2 text-white/90 hover:text-white transition group text-sm font-semibold">
+                    class="flex items-center gap-2 text-white/80 hover:text-white transition group text-sm font-semibold">
+
                     <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        class="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="2.5">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M15 19l-7-7 7-7" />
                     </svg>
+
                     Kembali
                 </a>
 
+                {{-- Title --}}
                 <h1 class="text-white font-bold text-lg tracking-wide">
-                    Form Peminjaman
+                    Form Peminjaman Buku
                 </h1>
 
-                {{-- Spacer agar judul tetap center --}}
+                {{-- Spacer --}}
                 <div class="w-16"></div>
 
             </div>
@@ -42,89 +51,159 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
 
-                    {{-- COVER --}}
+                    {{-- LEFT SIDE --}}
                     <div class="md:col-span-1">
-                        <img src="{{ $buku->cover
-                            ? asset('storage/cover-buku/'.$buku->cover)
-                            : asset('images/default-book.png') }}"
-                            class="w-full h-[380px] object-cover rounded-xl shadow-md hover:scale-105 transition duration-300">
+
+                        <div class="sticky top-8">
+
+                            {{-- Cover --}}
+                            <img src="{{ $buku->cover
+                                ? asset('storage/cover-buku/'.$buku->cover)
+                                : asset('images/default-book.png') }}"
+                                class="w-full h-[420px] object-cover rounded-2xl shadow-md border border-[#BBBFCA]">
+
+                            {{-- Info Card --}}
+                            <div class="mt-5 bg-[#E8E8E8] rounded-2xl p-5 border border-[#BBBFCA]">
+
+                                <h3 class="font-bold text-sm mb-4">
+                                    Informasi Buku
+                                </h3>
+
+                                <div class="space-y-3 text-sm">
+
+                                    <div class="flex justify-between">
+                                        <span class="text-[#6B6B6B]">
+                                            Pengarang
+                                        </span>
+                                        <span class="font-medium text-right">
+                                            {{ $buku->pengarang }}
+                                        </span>
+                                    </div>
+
+                                    <div class="flex justify-between">
+                                        <span class="text-[#6B6B6B]">
+                                            Kategori
+                                        </span>
+                                        <span class="font-medium text-right">
+                                            {{ $buku->kategori->nama_kategori ?? 'Tanpa Kategori' }}
+                                        </span>
+                                    </div>
+
+                                    <div class="flex justify-between">
+                                        <span class="text-[#6B6B6B]">
+                                            Tahun
+                                        </span>
+                                        <span class="font-medium">
+                                            {{ $buku->tahun_terbit }}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    {{-- FORM --}}
-                    <div class="md:col-span-2 flex flex-col justify-between">
+                    {{-- RIGHT SIDE --}}
+                    <div class="md:col-span-2">
 
-                        <div>
-                            {{-- Alert Error --}}
-                            @if(session('error'))
-                            <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-5 text-sm">
+                        {{-- Alert Error --}}
+                        @if(session('error'))
+                            <div class="mb-5 bg-red-50 border border-red-200 text-red-600 px-4 py-4 rounded-2xl text-sm">
                                 {{ session('error') }}
                             </div>
-                            @endif
+                        @endif
 
-                            @if($errors->any())
-                            <div class="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-5 text-sm">
+                        @if($errors->any())
+                            <div class="mb-5 bg-red-50 border border-red-200 text-red-600 px-4 py-4 rounded-2xl text-sm">
                                 {{ $errors->first() }}
                             </div>
-                            @endif
+                        @endif
 
-                            {{-- Judul & Pengarang --}}
-                            <h2 class="text-2xl font-bold text-gray-800 leading-snug">
+                        {{-- Book Title --}}
+                        <div>
+                            <h2 class="text-3xl font-bold leading-snug text-[#3D3D3B]">
                                 {{ $buku->judul_buku }}
                             </h2>
 
-                            <div class="flex flex-wrap items-center gap-4 mt-2 text-sm text-gray-500">
-                                <span class="flex items-center gap-1">
-                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
-                                    {{ $buku->pengarang }}
-                                </span>
-                                <span class="flex items-center gap-1">
-                                    <svg class="w-4 h-4 text-[#1a73e8]" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    <span class="text-[#1a73e8] font-medium">
-                                        {{ $buku->kategori->nama_kategori ?? 'Tanpa Kategori' }}
-                                    </span>
-                                </span>
-                            </div>
+                            <p class="mt-2 text-sm text-[#6B6B6B]">
+                                Lengkapi tanggal pengembalian untuk mengajukan peminjaman buku.
+                            </p>
+                        </div>
 
-                            {{-- Divider --}}
-                            <div class="border-t border-gray-100 my-5"></div>
+                        {{-- Divider --}}
+                        <div class="border-t border-[#BBBFCA] my-6"></div>
 
-                            {{-- Form --}}
+                        {{-- Guide Card --}}
+                        <div class="bg-[#F4F4F2] border border-[#BBBFCA] rounded-2xl p-5 mb-6">
+
+                            <h3 class="font-semibold text-sm mb-3">
+                                Panduan Peminjaman
+                            </h3>
+
+                            <ul class="space-y-2 text-sm text-[#6B6B6B]">
+                                <li>• Pastikan tanggal pengembalian dipilih dengan benar.</li>
+                                <li>• Buku hanya bisa dipinjam satu per akun.</li>
+                                <li>• Keterlambatan pengembalian dapat dikenakan denda.</li>
+                            </ul>
+
+                        </div>
+
+                        {{-- Form Card --}}
+                        <div class="bg-white border border-[#BBBFCA] rounded-2xl p-6">
+
                             <form method="POST" action="{{ route('peminjam.form-peminjaman.store') }}">
                                 @csrf
+
                                 <input type="hidden" name="buku_id" value="{{ $buku->id }}">
 
-                                <div class="mb-5">
-                                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {{-- Input Date --}}
+                                <div class="mb-6">
+
+                                    <label class="block text-sm font-semibold mb-2 text-[#3D3D3B]">
                                         Tanggal Pengembalian
                                     </label>
-                                    <input type="date" name="tanggal_jatuh_tempo"
-                                        class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-gray-50 focus:ring-2 focus:ring-[#1a73e8] focus:outline-none focus:bg-white transition"
-                                        min="{{ date('Y-m-d', strtotime('+1 day')) }}" required>
+
+                                    <input type="date"
+                                        name="tanggal_jatuh_tempo"
+                                        min="{{ date('Y-m-d', strtotime('+1 day')) }}"
+                                        required
+                                        class="w-full border border-[#BBBFCA] rounded-2xl px-4 py-4 text-sm bg-[#F4F4F2] focus:ring-2 focus:ring-[#6B6B6B] focus:outline-none focus:bg-white transition">
+
+                                    <p class="mt-2 text-xs text-[#6B6B6B]">
+                                        Pilih tanggal kapan buku akan dikembalikan.
+                                    </p>
+
                                 </div>
 
+                                {{-- Submit Button --}}
                                 <button type="submit"
-                                    class="flex items-center justify-center gap-2 w-full py-3 rounded-xl font-semibold text-sm text-white transition shadow-sm"
-                                    style="background: linear-gradient(135deg, #1557b0 0%, #1a73e8 55%, #4da3ff 100%);">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    class="w-full flex items-center justify-center gap-2 py-4 rounded-2xl font-semibold text-sm bg-[#3D3D3B] text-white hover:bg-[#2E2E2D] active:scale-[0.98] transition-all duration-300 shadow-sm">
+
+                                    <svg class="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24">
+
+                                        <path stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
                                             d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                     </svg>
+
                                     Ajukan Peminjaman
+
                                 </button>
 
                             </form>
 
-                            <p class="mt-4 text-xs text-gray-400">
-                                * Kamu hanya dapat meminjam 1 buku dalam satu waktu.
-                            </p>
+                        </div>
 
+                        {{-- Info --}}
+                        <div class="mt-5 text-xs text-[#6B6B6B]">
+                            * Setelah pengajuan, petugas akan memproses permintaan peminjaman kamu.
                         </div>
 
                     </div>
@@ -132,12 +211,13 @@
                 </div>
 
             </div>
+
         </div>
 
     </div>
 
-    {{-- FOOTER MINIMAL --}}
-    <div class="text-center text-xs text-gray-400 py-6">
+    {{-- FOOTER --}}
+    <div class="text-center text-xs text-[#6B6B6B] py-6">
         © {{ date('Y') }} Sistem Perpustakaan
     </div>
 

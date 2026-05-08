@@ -1,109 +1,159 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-[#3D3D3B] leading-tight">
             Edit Buku
         </h2>
     </x-slot>
 
-    <div class="py-6">
-        <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
+    <div class="min-h-screen bg-[#F4F4F2] py-8">
+        <div class="max-w-4xl mx-auto px-6">
 
-            <div class="bg-white p-6 shadow rounded">
+            {{-- Error Alert --}}
+            @if ($errors->any())
+                <div class="mb-6 bg-red-50 border border-red-200 rounded-2xl p-4 shadow-sm">
+                    <p class="font-semibold text-red-600 mb-2">
+                        Terjadi kesalahan:
+                    </p>
+
+                    <ul class="text-sm text-red-500 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>- {{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="bg-[#E8E8E8] border border-[#BBBFCA] rounded-3xl shadow-sm overflow-hidden">
+
+                {{-- Header --}}
+                <div class="px-8 py-6 border-b border-[#BBBFCA] bg-[#F4F4F2]">
+                    <h3 class="text-xl font-bold text-[#3D3D3B]">
+                        Form Edit Buku
+                    </h3>
+                    <p class="text-sm text-[#3D3D3B]/60 mt-1">
+                        Perbarui data buku perpustakaan.
+                    </p>
+                </div>
+
+                {{-- Form --}}
                 <form action="{{ route('admin.data-buku.update', $buku->id) }}"
                       method="POST"
-                      enctype="multipart/form-data">
+                      enctype="multipart/form-data"
+                      class="p-8">
+
                     @csrf
                     @method('PUT')
 
-                    <div class="mb-4">
-                        <label class="block mb-1">Judul Buku</label>
-                        <input type="text" name="judul_buku"
-                               value="{{ $buku->judul_buku }}"
-                               class="w-full border rounded px-3 py-2"
-                               required>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        {{-- Judul --}}
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-[#3D3D3B] mb-2">
+                                Judul Buku
+                            </label>
+                            <input type="text"
+                                   name="judul_buku"
+                                   value="{{ old('judul_buku', $buku->judul_buku) }}"
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3 focus:ring-2 focus:ring-[#3D3D3B]"
+                                   required>
+                        </div>
+
+                        {{-- Pengarang --}}
+                        <div>
+                            <input type="text"
+                                   name="pengarang"
+                                   value="{{ old('pengarang', $buku->pengarang) }}"
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3"
+                                   required>
+                        </div>
+
+                        {{-- Penerbit --}}
+                        <div>
+                            <input type="text"
+                                   name="penerbit"
+                                   value="{{ old('penerbit', $buku->penerbit) }}"
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3"
+                                   required>
+                        </div>
+
+                        {{-- Tahun --}}
+                        <div>
+                            <input type="text"
+                                   name="tahun_terbit"
+                                   value="{{ old('tahun_terbit', $buku->tahun_terbit) }}"
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3"
+                                   required>
+                        </div>
+
+                        {{-- Kategori --}}
+                        <div>
+                            <select name="kategori_id"
+                                    class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3"
+                                    required>
+                                @foreach($kategori as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ $buku->kategori_id == $item->id ? 'selected' : '' }}>
+                                        {{ $item->nama_kategori }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        {{-- Jumlah --}}
+                        <div>
+                            <input type="number"
+                                   name="jumlah_buku"
+                                   min="1"
+                                   value="{{ old('jumlah_buku', $buku->jumlah_buku) }}"
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3"
+                                   required>
+                        </div>
+
+                        {{-- Deskripsi --}}
+                        <div class="md:col-span-2">
+                            <textarea name="deskripsi"
+                                      rows="4"
+                                      class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3">{{ old('deskripsi', $buku->deskripsi) }}</textarea>
+                        </div>
+
+                        {{-- Cover --}}
+                        <div class="md:col-span-2">
+
+                            @if($buku->cover)
+                                <img src="{{ asset('storage/cover-buku/' . $buku->cover) }}"
+                                     class="w-40 rounded-2xl shadow mb-4">
+                            @endif
+
+                            <input type="file"
+                                   name="cover"
+                                   accept="image/*"
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3">
+
+                            <p class="text-xs text-[#3D3D3B]/60 mt-2">
+                                Kosongkan jika tidak ingin mengganti cover.
+                            </p>
+
+                        </div>
+
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block mb-1">Pengarang</label>
-                        <input type="text" name="pengarang"
-                               value="{{ $buku->pengarang }}"
-                               class="w-full border rounded px-3 py-2"
-                               required>
-                    </div>
+                    {{-- Action --}}
+                    <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[#BBBFCA]">
 
-                    <div class="mb-4">
-                        <label class="block mb-1">Penerbit</label>
-                        <input type="text" name="penerbit"
-                               value="{{ $buku->penerbit }}"
-                               class="w-full border rounded px-3 py-2"
-                               required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block mb-1">Tahun Terbit</label>
-                        <input type="text" name="tahun_terbit"
-                               value="{{ $buku->tahun_terbit }}"
-                               class="w-full border rounded px-3 py-2"
-                               required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block mb-1">Kategori</label>
-                        <select name="kategori_id"
-                                class="w-full border rounded px-3 py-2"
-                                required>
-                            @foreach($kategori as $item)
-                                <option value="{{ $item->id }}"
-                                    {{ $buku->kategori_id == $item->id ? 'selected' : '' }}>
-                                    {{ $item->nama_kategori }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block mb-1">Jumlah Buku</label>
-                        <input type="number" name="jumlah_buku"
-                               value="{{ $buku->jumlah_buku }}"
-                               class="w-full border rounded px-3 py-2"
-                               min="1"
-                               required>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block mb-1">Deskripsi</label>
-                        <textarea name="deskripsi"
-                                  class="w-full border rounded px-3 py-2"
-                                  rows="3">{{ $buku->deskripsi }}</textarea>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="block mb-1">Cover Buku</label>
-
-                        @if($buku->cover)
-                            <img src="{{ asset('storage/cover-buku/' . $buku->cover) }}"
-                                 class="w-32 mb-2 rounded shadow">
-                        @endif
-
-                        <input type="file" name="cover"
-                               class="w-full border rounded px-3 py-2"
-                               accept="image/*">
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            Kosongkan jika tidak ingin mengganti cover
-                        </p>
-                    </div>
-
-                    <div class="flex justify-end space-x-2">
                         <a href="{{ route('admin.data-buku.index') }}"
-                           class="px-4 py-2 bg-gray-500 text-white rounded">
+                           class="px-5 py-3 rounded-2xl border border-[#BBBFCA] text-[#3D3D3B] hover:bg-[#F4F4F2] transition">
                             Kembali
                         </a>
-                        <button class="px-4 py-2 bg-green-600 text-white rounded">
-                            Update
+
+                        <button type="submit"
+                                class="px-6 py-3 rounded-2xl bg-[#3D3D3B] text-white hover:opacity-90 transition">
+                            Update Buku
                         </button>
+
                     </div>
+
                 </form>
+
             </div>
 
         </div>

@@ -13,7 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased bg-[#EBF4F6] text-gray-800">
+<body class="font-sans antialiased bg-[#F4F4F2] text-[#3D3D3B]">
 
 <div class="min-h-screen">
 
@@ -27,12 +27,10 @@
         @endif
     @endauth
 
-    <!--  #09637E -->
-
     @isset($header)
-        <header class="bg-white shadow-md">
+        <header class="bg-[#E8E8E8] border-b border-[#BBBFCA] shadow-sm">
             <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                <h2 class="font-semibold text-xl text-white">
+                <h2 class="font-semibold text-xl text-[#3D3D3B]">
                     {{ $header }}
                 </h2>
             </div>

@@ -17,13 +17,13 @@ class DashboardController extends Controller
             ->whereNull('tanggal_kembali')
             ->get();
 
-        Peminjaman::where('status', 'dipinjam')
-            ->whereNull('tanggal_kembali')
-            ->whereDate('tanggal_jatuh_tempo', '<', Carbon::now())
-            ->update([
-                'status' => 'terlambat',
-                'denda' => 5000,
-            ]);
+        // Peminjaman::where('status', 'dipinjam')
+        //     ->whereNull('tanggal_kembali')
+        //     ->whereDate('tanggal_jatuh_tempo', '<', Carbon::now())
+        //     ->update([
+        //         'status' => 'terlambat',
+        //         'denda' => 5000,
+        //     ]);
 
         $today = Carbon::today();
 
@@ -38,7 +38,7 @@ class DashboardController extends Controller
 
         // 2️⃣ Hitung statistik setelah update
         $totalPeminjamanAktif = Peminjaman::where('status', 'dipinjam')->count();
-        $menungguValidasi = Peminjaman::where('status', 'menunggu')->count();
+        $menungguValidasi = Peminjaman::where('status', 'menunggu_validasi')->count();
         $terlambat = Peminjaman::where('status', 'terlambat')->count();
         $totalBuku = Buku::count();
 

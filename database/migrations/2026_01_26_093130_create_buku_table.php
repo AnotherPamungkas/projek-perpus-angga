@@ -20,7 +20,7 @@ return new class extends Migration
             $table->year('tahun_terbit');
             $table->foreignId('kategori_id')->constrained('kategori', 'id');
             $table->integer('jumlah_buku');
-            $table->string('deskripsi');
+            $table->text('deskripsi');
             $table->enum('status', ['tersedia', 'ditolak', 'menunggu_validasi']);
             $table->timestamps();
         });

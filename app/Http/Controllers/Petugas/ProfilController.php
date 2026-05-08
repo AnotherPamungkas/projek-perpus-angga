@@ -43,7 +43,7 @@ class ProfilController extends Controller
 
         // Update atau create profil
         $user->profil()->updateOrCreate(
-            ['user_id' => $user->id],
+            ['peminjam_id' => $user->id],
             [
                 'nomor_telepon' => $validated['nomor_telepon'] ?? null,
                 'alamat' => $validated['alamat'] ?? null,

@@ -8,106 +8,98 @@
     @vite('resources/css/app.css')
 </head>
 
-<body style="background-color: #f0f4f8;" class="min-h-screen py-8">
+<body class="min-h-screen bg-[#F4F4F2]">
 
-    <div class="max-w-5xl mx-auto px-6">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
-        <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+        <div class="space-y-6">
 
             {{-- HEADER --}}
-            <div class="px-8 py-5 flex items-center justify-between"
-                style="background: linear-gradient(135deg, #1557b0 0%, #1a73e8 55%, #4da3ff 100%);">
+            <div class="bg-[#3D3D3B] rounded-2xl shadow-sm border border-[#BBBFCA] p-6">
 
-                <a href="{{ route('peminjam.riwayat-peminjaman.index') }}"
-                    class="flex items-center gap-2 text-white/90 hover:text-white transition group text-sm font-semibold">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-4 h-4 group-hover:-translate-x-1 transition-transform duration-200"
-                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                    Kembali
-                </a>
+                <div class="flex items-center justify-between">
 
-                <div class="text-center">
-                    <h1 class="text-white font-bold text-lg tracking-wide">Detail Riwayat Peminjaman</h1>
-                    <p class="text-white/70 text-xs mt-0.5">Informasi lengkap peminjaman buku Anda</p>
+                    <a href="{{ route('peminjam.riwayat-peminjaman.index') }}"
+                        class="flex items-center gap-2 text-white/80 hover:text-white transition text-sm font-semibold group">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+
+                        Kembali
+                    </a>
+
+                    <div class="text-center">
+                        <h1 class="text-lg font-bold text-white">
+                            Detail Riwayat Peminjaman
+                        </h1>
+                        <p class="text-xs text-white/70 mt-1">
+                            Informasi lengkap transaksi peminjaman buku
+                        </p>
+                    </div>
+
+                    <div class="w-16"></div>
+
                 </div>
-
-                <div class="w-16"></div>
 
             </div>
 
-            {{-- BODY --}}
-            <div class="p-8 grid md:grid-cols-3 gap-10">
+            {{-- MAIN CONTENT --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {{-- COVER --}}
-                <div class="md:col-span-1">
-                    <img src="{{ asset('storage/cover-buku/' . $peminjaman->buku->cover ?? 'default.jpg') }}"
-                        class="w-full h-[340px] object-cover rounded-xl shadow-md">
-                </div>
+                {{-- LEFT SIDE --}}
+                <div class="space-y-5">
 
-                {{-- DETAIL --}}
-                <div class="md:col-span-2 space-y-6">
+                    {{-- Cover Card --}}
+                    <div
+                        class="bg-white rounded-2xl shadow-sm border border-[#BBBFCA] overflow-hidden lg:sticky lg:top-6">
 
-                    {{-- Informasi Buku --}}
-                    <div>
-                        <h2 class="text-2xl font-bold text-gray-800 leading-snug">
-                            {{ $peminjaman->buku->judul_buku }}
-                        </h2>
-                        <div class="flex flex-wrap gap-4 mt-2 text-sm text-gray-500">
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                </svg>
+                        <img src="{{ $peminjaman->buku->cover
+                            ? asset('storage/cover-buku/' . $peminjaman->buku->cover)
+                            : asset('images/default-book.png') }}" class="w-full h-[420px] object-cover">
+
+                        <div class="p-5">
+
+                            <h2 class="font-bold text-[#3D3D3B] text-lg leading-snug">
+                                {{ $peminjaman->buku->judul_buku }}
+                            </h2>
+
+                            <p class="text-sm text-gray-500 mt-2">
                                 {{ $peminjaman->buku->pengarang }}
-                            </span>
-                            <span class="flex items-center gap-1">
-                                <svg class="w-4 h-4 text-[#1a73e8]" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <span class="text-[#1a73e8] font-medium">
+                            </p>
+
+                            <div class="mt-4">
+                                <span
+                                    class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-[#E8E8E8] text-[#3D3D3B]">
                                     {{ $peminjaman->buku->kategori->nama_kategori }}
                                 </span>
-                            </span>
+                            </div>
+
                         </div>
+
                     </div>
 
-                    {{-- Informasi Peminjaman --}}
-                    <div class="bg-gray-50 p-5 rounded-xl border border-gray-100 space-y-4">
+                </div>
 
-                        <h3 class="font-bold text-gray-700 text-sm">Informasi Peminjaman</h3>
+                {{-- RIGHT SIDE --}}
+                <div class="lg:col-span-2 space-y-6">
 
-                        <div class="grid grid-cols-2 gap-4 text-sm">
+                    {{-- Status Section --}}
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#BBBFCA] p-6">
+
+                        <div class="flex items-center justify-between">
 
                             <div>
-                                <p class="text-xs text-gray-400">Tanggal Pinjam</p>
-                                <p class="font-semibold text-gray-700 mt-0.5">
-                                    {{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d M Y') }}
+                                <p class="text-sm text-gray-500">
+                                    Status Peminjaman
                                 </p>
-                            </div>
 
-                            <div>
-                                <p class="text-xs text-gray-400">Jatuh Tempo</p>
-                                <p class="font-semibold text-gray-700 mt-0.5">
-                                    {{ \Carbon\Carbon::parse($peminjaman->tanggal_jatuh_tempo)->format('d M Y') }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-400">Tanggal Kembali</p>
-                                <p class="font-semibold text-gray-700 mt-0.5">
-                                    {{ \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->format('d M Y') }}
-                                </p>
-                            </div>
-
-                            <div>
-                                <p class="text-xs text-gray-400">Status</p>
-                                <div class="mt-0.5">
+                                <div class="mt-2">
                                     @if($peminjaman->status === 'dikembalikan')
-                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
                                         ● Dikembalikan
                                     </span>
                                     @elseif($peminjaman->status === 'terlambat')
@@ -115,11 +107,13 @@
                                         ● Terlambat
                                     </span>
                                     @elseif($peminjaman->status === 'dipinjam')
-                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-[#1a73e8]">
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700">
                                         ● Sedang Dipinjam
                                     </span>
                                     @elseif($peminjaman->status === 'menunggu_validasi')
-                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-600">
+                                    <span
+                                        class="px-3 py-1 rounded-full text-xs font-semibold bg-[#E8E8E8] text-[#3D3D3B]">
                                         ● Menunggu Validasi
                                     </span>
                                     @else
@@ -131,40 +125,144 @@
                             </div>
 
                         </div>
+
+                    </div>
+
+                    {{-- Alasan Penolakan --}}
+                    @if($peminjaman->status === 'ditolak' && $peminjaman->alasan_penolakan)
+                    <div class="bg-white rounded-2xl shadow-sm border border-red-200 p-6">
+
+                        <div class="flex items-start gap-4">
+
+                            {{-- Icon --}}
+                            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-red-500" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                                </svg>
+
+                            </div>
+
+                            {{-- Content --}}
+                            <div class="flex-1">
+
+                                <h3 class="text-base font-bold text-[#3D3D3B]">
+                                    Alasan Penolakan
+                                </h3>
+
+                                <p class="text-sm text-gray-500 mt-1">
+                                    Permintaan peminjaman ini ditolak oleh petugas.
+                                </p>
+
+                                <div class="mt-4 bg-[#F4F4F2] border border-red-100 rounded-xl p-4">
+
+                                    <p class="text-sm text-[#3D3D3B] leading-relaxed">
+                                        {{ $peminjaman->alasan_penolakan }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    @endif
+
+                    {{-- Informasi Peminjaman --}}
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#BBBFCA] p-6">
+
+                        <h3 class="text-base font-bold text-[#3D3D3B] mb-5">
+                            Informasi Peminjaman
+                        </h3>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+                            <div class="bg-[#F4F4F2] border border-[#BBBFCA] rounded-xl p-4">
+                                <p class="text-xs text-gray-500">
+                                    Tanggal Pinjam
+                                </p>
+                                <p class="font-semibold text-[#3D3D3B] mt-2">
+                                    {{ \Carbon\Carbon::parse($peminjaman->tanggal_pinjam)->format('d M Y') }}
+                                </p>
+                            </div>
+
+                            <div class="bg-[#F4F4F2] border border-[#BBBFCA] rounded-xl p-4">
+                                <p class="text-xs text-gray-500">
+                                    Jatuh Tempo
+                                </p>
+                                <p class="font-semibold text-[#3D3D3B] mt-2">
+                                    {{ \Carbon\Carbon::parse($peminjaman->tanggal_jatuh_tempo)->format('d M Y') }}
+                                </p>
+                            </div>
+
+                            <div class="bg-[#F4F4F2] border border-[#BBBFCA] rounded-xl p-4 md:col-span-2">
+                                <p class="text-xs text-gray-500">
+                                    Tanggal Kembali
+                                </p>
+
+                                <p class="font-semibold text-[#3D3D3B] mt-2">
+                                    @if($peminjaman->tanggal_kembali)
+                                    {{ \Carbon\Carbon::parse($peminjaman->tanggal_kembali)->format('d M Y') }}
+                                    @else
+                                    -
+                                    @endif
+                                </p>
+                            </div>
+
+                        </div>
+
                     </div>
 
                     {{-- ULASAN --}}
                     @if($peminjaman->tanggal_kembali)
-                    <div class="bg-white border border-gray-100 rounded-xl p-5 shadow-sm">
+                    <div class="bg-white rounded-2xl shadow-sm border border-[#BBBFCA] p-6">
 
-                        <h3 class="font-bold text-gray-700 text-sm mb-4">Ulasan Anda</h3>
+                        <div class="flex items-center justify-between mb-5">
 
-                        @if(!$ulasan)
-                        <button onclick="openModal()"
-                            class="flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-white shadow-sm transition hover:opacity-90"
-                            style="background: linear-gradient(135deg, #1557b0 0%, #1a73e8 55%, #4da3ff 100%);">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                            </svg>
-                            Beri Ulasan
-                        </button>
+                            <h3 class="text-base font-bold text-[#3D3D3B]">
+                                Ulasan Buku
+                            </h3>
+
+                            @if(!$ulasan)
+                            <button onclick="openModal()"
+                                class="px-5 py-2 rounded-xl bg-[#3D3D3B] text-white text-sm font-semibold hover:bg-[#2F2F2D] transition">
+                                Beri Ulasan
+                            </button>
+                            @endif
+
+                        </div>
+
+                        @if($ulasan)
+
+                        <div class="flex items-center gap-1 mb-4">
+                            @for($i = 1; $i <= 5; $i++) @if($i <=$ulasan->rating)
+                                <span class="text-yellow-400 text-2xl">★</span>
+                                @else
+                                <span class="text-gray-300 text-2xl">★</span>
+                                @endif
+                                @endfor
+                        </div>
+
+                        <div class="bg-[#F4F4F2] border border-[#BBBFCA] rounded-xl p-4">
+
+                            <p class="text-sm text-[#3D3D3B] leading-relaxed">
+                                {{ $ulasan->isi_ulasan }}
+                            </p>
+
+                        </div>
 
                         @else
 
-                        <div class="flex items-center gap-0.5 mb-2">
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= $ulasan->rating)
-                                <span class="text-yellow-400 text-xl">★</span>
-                                @else
-                                <span class="text-gray-200 text-xl">★</span>
-                                @endif
-                            @endfor
-                        </div>
+                        <div class="bg-[#F4F4F2] border border-dashed border-[#BBBFCA] rounded-xl p-6 text-center">
 
-                        <p class="text-gray-600 text-sm leading-relaxed">
-                            {{ $ulasan->isi_ulasan }}
-                        </p>
+                            <p class="text-sm text-gray-500">
+                                Kamu belum memberikan ulasan untuk buku ini.
+                            </p>
+
+                        </div>
 
                         @endif
 
@@ -184,51 +282,73 @@
 
         <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
 
-            {{-- Modal Header --}}
-            <div class="px-6 py-5"
-                style="background: linear-gradient(135deg, #1557b0 0%, #1a73e8 55%, #4da3ff 100%);">
-                <h2 class="text-base font-bold text-white">Beri Ulasan</h2>
+            {{-- Header --}}
+            <div class="bg-[#3D3D3B] px-6 py-5">
+                <h2 class="text-white font-bold text-base">
+                    Beri Ulasan
+                </h2>
             </div>
 
+            {{-- Content --}}
             <div class="p-6">
+
                 <form action="{{ route('peminjam.ulasan.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="buku_id" value="{{ $peminjaman->buku_id }}">
 
+                    {{-- Rating --}}
                     <div class="mb-5">
-                        <label class="block mb-2 text-sm font-semibold text-gray-700">Rating</label>
-                        <div class="flex space-x-1 text-3xl" id="starRating">
-                            @for($i = 1; $i <= 5; $i++)
-                            <span data-value="{{ $i }}" class="star cursor-pointer text-gray-200 transition hover:text-yellow-400">
+
+                        <label class="block text-sm font-semibold text-[#3D3D3B] mb-3">
+                            Rating
+                        </label>
+
+                        <div class="flex gap-2 text-3xl" id="starRating">
+                            @for($i = 1; $i <= 5; $i++) <span data-value="{{ $i }}"
+                                class="star cursor-pointer text-gray-300 transition">
                                 ★
-                            </span>
-                            @endfor
+                                </span>
+                                @endfor
                         </div>
+
                         <input type="hidden" name="rating" id="ratingValue" required>
+
                     </div>
 
+                    {{-- Ulasan --}}
                     <div class="mb-5">
-                        <label class="block mb-2 text-sm font-semibold text-gray-700">Ulasan</label>
+
+                        <label class="block text-sm font-semibold text-[#3D3D3B] mb-2">
+                            Ulasan
+                        </label>
+
                         <textarea name="isi_ulasan" rows="4"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm bg-gray-50 focus:ring-2 focus:ring-[#1a73e8] focus:outline-none focus:bg-white transition"
+                            class="w-full border border-[#BBBFCA] rounded-xl px-4 py-3 text-sm bg-[#F4F4F2] focus:ring-2 focus:ring-gray-500 focus:outline-none"
                             placeholder="Tulis ulasan Anda..." required></textarea>
+
                     </div>
 
+                    {{-- Action --}}
                     <div class="flex justify-end gap-3">
+
                         <button type="button" onclick="closeModal()"
-                            class="px-5 py-2 rounded-xl text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition">
+                            class="px-5 py-2 rounded-xl text-sm font-semibold bg-[#E8E8E8] text-[#3D3D3B] hover:bg-[#DCDCDC] transition">
                             Batal
                         </button>
+
                         <button type="submit"
-                            class="px-5 py-2 rounded-xl text-sm font-semibold text-white shadow-sm transition hover:opacity-90"
-                            style="background: linear-gradient(135deg, #1557b0 0%, #1a73e8 55%, #4da3ff 100%);">
+                            class="px-5 py-2 rounded-xl text-sm font-semibold bg-[#3D3D3B] text-white hover:bg-[#2F2F2D] transition">
                             Simpan
                         </button>
+
                     </div>
+
                 </form>
+
             </div>
 
         </div>
+
     </div>
 
     {{-- FOOTER --}}
@@ -241,6 +361,7 @@
             document.getElementById('reviewModal').classList.remove('hidden');
             document.getElementById('reviewModal').classList.add('flex');
         }
+
         function closeModal() {
             document.getElementById('reviewModal').classList.add('hidden');
             document.getElementById('reviewModal').classList.remove('flex');
@@ -253,27 +374,21 @@
             star.addEventListener('click', function () {
                 const value = this.getAttribute('data-value');
                 ratingInput.value = value;
+
                 stars.forEach(s => {
                     if (s.getAttribute('data-value') <= value) {
-                        s.classList.remove('text-gray-200');
+                        s.classList.remove('text-gray-300');
                         s.classList.add('text-yellow-400');
                     } else {
                         s.classList.remove('text-yellow-400');
-                        s.classList.add('text-gray-200');
-                    }
-                });
-            });
-
-            star.addEventListener('mouseover', function () {
-                const value = this.getAttribute('data-value');
-                stars.forEach(s => {
-                    if (s.getAttribute('data-value') <= value) {
-                        s.classList.add('text-yellow-300');
+                        s.classList.add('text-gray-300');
                     }
                 });
             });
         });
+
     </script>
 
 </body>
+
 </html>

@@ -61,8 +61,14 @@ class DataPeminjamanController extends Controller
             return back()->with('error', 'Peminjaman sudah dikembalikan.');
         }
 
-        if ($peminjaman->status === 'terlambat' && !$peminjaman->denda) {
-            return back()->with('error', 'Harap berikan sanksi terlebih dahulu.');
+        if (
+            $peminjaman->status === 'terlambat' &&
+            $peminjaman->status_pembayaran !== 'sudah_bayar'
+        ) {
+            return back()->with(
+                'error',
+                'Denda belum dibayar.'
+            );
         }
 
         DB::transaction(function () use ($peminjaman) {
@@ -101,4 +107,29 @@ class DataPeminjamanController extends Controller
 
         return back()->with('success', 'Denda berhasil ditetapkan.');
     }
+
+    // public function confirmReturn(mixed $id)
+    // {
+    //     $peminjaman = Peminjaman::with('denda')
+    //         ->findOrFail($id);
+
+    //     if (
+    //         $peminjaman->hari_terlambat > 0 &&
+    //         (!$peminjaman->denda || $peminjaman->denda->status !== 'paid')
+    //     ) {
+    //         return back()->with(
+    //             'error',
+    //             'Denda belum dibayar'
+    //         );
+    //     }
+
+    //     $peminjaman->update([
+    //         'tanggal_kembali' => now()
+    //     ]);
+
+    //     return back()->with(
+    //         'success',
+    //         'Pengembalian berhasil dikonfirmasi'
+    //     );
+    // }
 }

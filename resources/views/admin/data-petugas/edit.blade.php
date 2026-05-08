@@ -1,93 +1,131 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-2xl font-bold text-[#1557b0]">
-            Edit Petugas
+        <h2 class="font-semibold text-xl text-[#3D3D3B] leading-tight">
+            Tambah Petugas
         </h2>
     </x-slot>
 
-    <div class="py-8 min-h-screen bg-gradient-to-br from-[#eaf2ff] via-white to-[#d6e6ff]">
-        <div class="max-w-3xl mx-auto px-6">
+    <div class="min-h-screen bg-[#F4F4F2] py-8">
+        <div class="max-w-4xl mx-auto px-6">
 
-            <div class="bg-white rounded-3xl shadow-sm border border-blue-100 overflow-hidden">
+            {{-- Error Alert --}}
+            @if ($errors->any())
+                <div class="mb-6 bg-red-50 border border-red-200 rounded-2xl p-4 shadow-sm">
+                    <p class="font-semibold text-red-600 mb-2">
+                        Terjadi kesalahan:
+                    </p>
 
-                <!-- Header -->
-                <div class="px-8 py-6 border-b border-blue-100">
-                    <h3 class="text-lg font-semibold text-[#1557b0]">
-                        Edit Data Petugas
+                    <ul class="text-sm text-red-500 space-y-1">
+                        @foreach ($errors->all() as $error)
+                            <li>- {{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Form Card --}}
+            <div class="bg-[#E8E8E8] border border-[#BBBFCA] rounded-3xl shadow-sm overflow-hidden">
+
+                {{-- Header --}}
+                <div class="px-8 py-6 border-b border-[#BBBFCA] bg-[#F4F4F2]">
+                    <h3 class="text-xl font-bold text-[#3D3D3B]">
+                        Form Tambah Petugas
                     </h3>
-                    <p class="text-sm text-gray-500 mt-1">
-                        Perbarui informasi petugas sesuai kebutuhan.
+
+                    <p class="text-sm text-[#3D3D3B]/60 mt-1">
+                        Tambahkan data petugas baru ke dalam sistem.
                     </p>
                 </div>
 
-                <!-- Form -->
-                <form action="{{ route('admin.data-petugas.update', $petugas->id) }}" method="POST" class="p-8 space-y-6">
+                {{-- Form --}}
+                <form action="{{ route('admin.data-petugas.store') }}"
+                      method="POST"
+                      class="p-8">
+
                     @csrf
-                    @method('PUT')
 
-                    <div class="grid md:grid-cols-2 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        <!-- Nama -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{-- Nama Lengkap --}}
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-[#3D3D3B] mb-2">
                                 Nama Lengkap
                             </label>
-                            <input type="text" name="nama" value="{{ $petugas->nama }}" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:ring-2 focus:ring-[#1a73e8] focus:border-[#1a73e8]">
+
+                            <input type="text"
+                                   name="nama"
+                                   value="{{ old('nama') }}"
+                                   required
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3
+                                          focus:ring-2 focus:ring-[#3D3D3B] focus:outline-none">
                         </div>
 
-                        <!-- Username -->
+                        {{-- Username --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-medium text-[#3D3D3B] mb-2">
                                 Username
                             </label>
-                            <input type="text" name="username" value="{{ $petugas->username }}" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:ring-2 focus:ring-[#1a73e8] focus:border-[#1a73e8]">
+
+                            <input type="text"
+                                   name="username"
+                                   value="{{ old('username') }}"
+                                   required
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3
+                                          focus:ring-2 focus:ring-[#3D3D3B] focus:outline-none">
                         </div>
 
-                        <!-- Email -->
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                        {{-- Email --}}
+                        <div>
+                            <label class="block text-sm font-medium text-[#3D3D3B] mb-2">
                                 Email
                             </label>
-                            <input type="email" name="email" value="{{ $petugas->email }}" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:ring-2 focus:ring-[#1a73e8] focus:border-[#1a73e8]">
+
+                            <input type="email"
+                                   name="email"
+                                   value="{{ old('email') }}"
+                                   required
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3
+                                          focus:ring-2 focus:ring-[#3D3D3B] focus:outline-none">
                         </div>
 
-                        <!-- Password -->
+                        {{-- Password --}}
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-medium text-[#3D3D3B] mb-2">
                                 Password
-                                <span class="text-xs text-gray-400">(Kosongkan jika tidak diubah)</span>
                             </label>
-                            <input type="password" name="password"
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:ring-2 focus:ring-[#1a73e8] focus:border-[#1a73e8]">
+
+                            <input type="password"
+                                   name="password"
+                                   required
+                                   class="w-full rounded-2xl border border-[#BBBFCA] bg-white px-4 py-3
+                                          focus:ring-2 focus:ring-[#3D3D3B] focus:outline-none">
+
+                            <p class="text-xs text-[#3D3D3B]/60 mt-2">
+                                Gunakan password yang aman dan mudah diingat.
+                            </p>
                         </div>
 
                     </div>
 
-                    <!-- Actions -->
-                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
+                    {{-- Action --}}
+                    <div class="flex justify-end gap-3 mt-8 pt-6 border-t border-[#BBBFCA]">
 
                         <a href="{{ route('admin.data-petugas.index') }}"
-                           class="px-5 py-2.5 rounded-xl text-sm border border-gray-300 text-gray-600 hover:bg-gray-50 transition">
+                           class="px-5 py-3 rounded-2xl border border-[#BBBFCA]
+                                  text-[#3D3D3B] hover:bg-[#F4F4F2] transition">
                             Kembali
                         </a>
 
                         <button type="submit"
-                            class="px-6 py-2.5 rounded-xl text-white text-sm
-                            bg-gradient-to-r from-[#1557b0] to-[#1a73e8]
-                            hover:from-[#144a96] hover:to-[#1666cc] transition shadow-sm">
-                            Update
+                                class="px-6 py-3 rounded-2xl bg-[#3D3D3B]
+                                       text-white hover:opacity-90 transition">
+                            Simpan Petugas
                         </button>
 
                     </div>
 
                 </form>
+
             </div>
 
         </div>

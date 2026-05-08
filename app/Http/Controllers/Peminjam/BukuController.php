@@ -67,6 +67,7 @@ class BukuController extends Controller
 
         $isDipinjam = $user->peminjaman()
             ->where('buku_id', $buku->id)
+            ->whereIn('status', ['dipinjam', 'terlambat'])
             ->whereNull('tanggal_kembali')
             ->exists();
 

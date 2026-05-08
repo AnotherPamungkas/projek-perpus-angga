@@ -1,154 +1,160 @@
 <x-app-layout>
     <x-slot name="header">
-        Data Buku
+        <h2 class="text-xl font-bold text-[#3D3D3B]">
+            Data Buku
+        </h2>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-8 bg-[#F4F4F2] min-h-screen">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
+            {{-- Alert --}}
             @if(session('success'))
-            <div class="mb-4 bg-[#7AB2B2] text-white px-4 py-3 rounded-xl shadow">
-                {{ session('success') }}
-            </div>
+                <div class="bg-green-50 border border-green-200 text-green-700 px-5 py-4 rounded-2xl shadow-sm">
+                    {{ session('success') }}
+                </div>
             @endif
 
             @if(session('error'))
-            <div class="mb-4 bg-red-100 text-red-600 px-4 py-3 rounded-xl shadow">
-                {{ session('error') }}
-            </div>
+                <div class="bg-red-50 border border-red-200 text-red-600 px-5 py-4 rounded-2xl shadow-sm">
+                    {{ session('error') }}
+                </div>
             @endif
 
-
-            <div class="bg-white shadow-xl rounded-2xl p-6">
+            <div class="bg-[#E8E8E8] border border-[#BBBFCA] rounded-2xl shadow-sm p-6">
 
                 {{-- Top Section --}}
-                <div class="flex flex-col md:flex-row justify-between md:items-end gap-4 mb-6">
+                <div class="flex flex-col lg:flex-row justify-between gap-4 mb-6">
 
                     {{-- Search --}}
-                    <form method="GET" class="flex gap-2">
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari judul / pengarang / kategori..."
-                            class="border border-[#7AB2B2] rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#088395] focus:outline-none w-64">
+                    <form method="GET" class="flex gap-2 w-full lg:w-auto">
+                        <input type="text"
+                            name="search"
+                            value="{{ request('search') }}"
+                            placeholder="Cari buku..."
+                            class="w-full lg:w-80 rounded-xl border border-[#BBBFCA] bg-white px-4 py-3 focus:ring-2 focus:ring-[#3D3D3B] focus:outline-none">
 
-                        <button class="bg-[#09637E] text-white px-4 py-2 rounded-lg hover:bg-[#088395] transition">
+                        <button
+                            class="px-5 py-3 rounded-xl bg-[#3D3D3B] text-white font-medium hover:opacity-90 transition">
                             Cari
                         </button>
                     </form>
 
-                    {{-- Action Button --}}
-                    <div class="flex gap-2">
+                    {{-- Actions --}}
+                    <div class="flex gap-3">
+
                         <a href="{{ route('petugas.data-buku.export') }}"
-                            class="bg-[#088395] text-white px-5 py-2 rounded-lg shadow hover:bg-[#09637E] transition">
+                            class="px-5 py-3 rounded-xl border border-[#BBBFCA] bg-white text-[#3D3D3B] font-medium hover:bg-[#F4F4F2] transition">
                             Export Excel
                         </a>
 
                         <a href="{{ route('petugas.data-buku.create') }}"
-                            class="bg-[#09637E] text-white px-5 py-2 rounded-lg shadow hover:bg-[#088395] transition">
+                            class="px-5 py-3 rounded-xl bg-[#3D3D3B] text-white font-medium hover:opacity-90 transition">
                             + Tambah Buku
                         </a>
+
                     </div>
+
                 </div>
 
                 {{-- Table --}}
-                <div class="overflow-x-auto">
-                    <table class="w-full table-fixed text-sm text-left">
-                        <thead class="bg-[#09637E] text-white">
+                <div class="overflow-x-auto rounded-2xl border border-[#BBBFCA] bg-white">
+                    <table class="w-full text-sm text-left">
+
+                        <thead class="bg-[#3D3D3B] text-white">
                             <tr>
-                                <th class="px-4 py-3 w-16">No</th>
-                                <th class="px-4 py-3 w-1/4">Judul</th>
-                                <th class="px-4 py-3 w-40">Kategori</th>
-                                <th class="px-4 py-3 w-28 text-center">Jumlah</th>
-                                <th class="px-4 py-3 w-32 text-center">Dipinjam</th>
-                                <th class="px-4 py-3 w-32 text-center">Status</th>
-                                <th class="px-4 py-3 w-40">Ditambahkan Oleh</th>
-                                <th class="px-4 py-3 w-40 text-center">Aksi</th>
+                                <th class="px-4 py-4">No</th>
+                                <th class="px-4 py-4">Judul</th>
+                                <th class="px-4 py-4">Kategori</th>
+                                <th class="px-4 py-4 text-center">Jumlah</th>
+                                <th class="px-4 py-4 text-center">Dipinjam</th>
+                                <th class="px-4 py-4 text-center">Status</th>
+                                <th class="px-4 py-4">Ditambahkan Oleh</th>
+                                <th class="px-4 py-4 text-center">Aksi</th>
                             </tr>
                         </thead>
 
-                        <tbody class="divide-y divide-gray-200">
+                        <tbody class="divide-y divide-[#BBBFCA]">
+
                             @forelse($buku as $index => $item)
-                            <tr class="hover:bg-[#EBF4F6] transition">
+                                <tr class="hover:bg-[#F4F4F2] transition">
 
-                                <td class="px-4 py-3">
-                                    {{ $buku->firstItem() + $index }}
-                                </td>
+                                    <td class="px-4 py-4">
+                                        {{ $buku->firstItem() + $index }}
+                                    </td>
 
-                                <td class="px-4 py-3 font-medium">
-                                    {{ $item->judul_buku }}
-                                </td>
+                                    <td class="px-4 py-4 font-semibold text-[#3D3D3B]">
+                                        {{ $item->judul_buku }}
+                                    </td>
 
-                                <td class="px-4 py-3">
-                                    {{ $item->kategori->nama_kategori }}
-                                </td>
+                                    <td class="px-4 py-4">
+                                        {{ $item->kategori->nama_kategori }}
+                                    </td>
 
-                                <td class="px-4 py-3 text-center">
-                                    {{ $item->jumlah_buku }}
-                                </td>
+                                    <td class="px-4 py-4 text-center">
+                                        {{ $item->jumlah_buku }}
+                                    </td>
 
+                                    <td class="px-4 py-4 text-center">
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-600">
+                                            {{ $item->sedang_dipinjam }}
+                                        </span>
+                                    </td>
 
-                                <td class="px-4 py-3 text-center">
-                                    @if($item->sedang_dipinjam > 0)
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-600">
-                                        {{ $item->sedang_dipinjam }} Aktif
-                                    </span>
-                                    @else
-                                    <span
-                                        class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-600">
-                                        0
-                                    </span>
-                                    @endif
-                                </td>
-
-
-                                <td class="px-4 py-3 text-center">
-                                    <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                    <td class="px-4 py-4 text-center">
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold
                                             {{ $item->status === 'tersedia'
                                                 ? 'bg-green-100 text-green-600'
                                                 : 'bg-red-100 text-red-600' }}">
-                                        {{ ucfirst($item->status) }}
-                                    </span>
-                                </td>
+                                            {{ ucfirst($item->status) }}
+                                        </span>
+                                    </td>
 
-                                <td class="px-4 py-3">
-                                    <span class="text-[#09637E] font-semibold">
-                                        {{ $item->creator->nama ?? $item->creator->username ?? '-' }}
-                                    </span>
-                                </td>
+                                    <td class="px-4 py-4 font-medium text-[#3D3D3B]">
+                                        {{ $item->creator->nama ?? '-' }}
+                                    </td>
 
-                                <td class="px-4 py-3 text-center space-x-2">
-                                    <a href="{{ route('petugas.data-buku.edit', $item->id) }}"
-                                        class="bg-[#7AB2B2] hover:bg-[#088395] text-white px-3 py-1 rounded-lg transition">
-                                        Edit
-                                    </a>
+                                    <td class="px-4 py-4 text-center space-x-2">
 
-                                    @if($item->sedang_dipinjam > 0)
-                                    <button disabled title="Buku sedang dipinjam"
-                                        class="bg-gray-400 cursor-not-allowed text-white px-3 py-1 rounded-lg">
-                                        Hapus
-                                    </button>
-                                    @else
-                                    <form action="{{ route('admin.data-buku.destroy', $item->id) }}" method="POST"
-                                        class="inline" onsubmit="return confirm('Hapus buku ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg transition">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                    @endif
-                                </td>
+                                        <a href="{{ route('petugas.data-buku.edit', $item->id) }}"
+                                            class="px-3 py-2 rounded-xl bg-[#3D3D3B] text-white hover:opacity-90 transition">
+                                            Edit
+                                        </a>
 
-                            </tr>
+                                        @if($item->sedang_dipinjam > 0)
+                                            <button disabled
+                                                class="px-3 py-2 rounded-xl bg-gray-300 text-gray-500 cursor-not-allowed">
+                                                Hapus
+                                            </button>
+                                        @else
+                                            <form action="{{ route('petugas.data-buku.destroy', $item->id) }}"
+                                                method="POST"
+                                                class="inline"
+                                                onsubmit="return confirm('Hapus buku ini?')">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button
+                                                    class="px-3 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        @endif
+
+                                    </td>
+
+                                </tr>
                             @empty
-                            <tr>
-                                <td colspan="7" class="text-center py-6 text-gray-500">
-                                    Data buku kosong
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td colspan="8"
+                                        class="py-10 text-center text-[#3D3D3B]/60">
+                                        Data buku masih kosong.
+                                    </td>
+                                </tr>
                             @endforelse
+
                         </tbody>
+
                     </table>
                 </div>
 
@@ -157,13 +163,10 @@
                     {{ $buku->links() }}
                 </div>
 
-                <div class="mt-4 text-sm text-gray-500">
-                    <p>
-                        * Buku yang sedang dipinjam tidak dapat dihapus sampai semua peminjaman dikembalikan.
-                    </p>
+                {{-- Note --}}
+                <div class="mt-4 text-sm text-[#3D3D3B]/60">
+                    * Buku yang sedang dipinjam tidak dapat dihapus.
                 </div>
-
-
 
             </div>
         </div>

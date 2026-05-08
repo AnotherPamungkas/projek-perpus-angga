@@ -69,7 +69,7 @@ class DataBukuController extends Controller
             'jumlah_buku'  => $request->jumlah_buku,
             'deskripsi'    => $request->deskripsi,
             'cover'        => $coverPath,
-            'status'       => $request->jumlah_buku > 0 ? 'tersedia' : 'tidak tersedia',
+            'status'       => 'menunggu_validasi',
             'created_by'   => Auth::id(),
         ]);
 

@@ -4,141 +4,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Perpustakaan Digital</title>
+    <title>Register - BiblioTech</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="min-h-screen flex items-center
-    bg-gradient-to-br from-[#eaf2ff] via-white to-[#d6e6ff]">
+<body class="min-h-screen bg-gray-100 flex items-center">
 
-    <div class="max-w-5xl mx-auto w-full px-6">
-        <div class="grid md:grid-cols-2 bg-white rounded-3xl shadow-xl overflow-hidden border border-blue-100">
+    <div class="max-w-6xl mx-auto w-full px-6 py-10">
 
-            <!-- LEFT SIDE (Branding) -->
-            <div class="bg-gradient-to-br from-[#1557b0] via-[#1a73e8] to-[#4da3ff]
-                text-white p-10 flex flex-col justify-center">
+        <div class="grid lg:grid-cols-2 bg-white rounded-[32px] shadow-xl overflow-hidden border border-gray-200">
 
-                <h1 class="text-4xl font-bold mb-4 tracking-tight">
-                    Bergabung dengan Perpustakaan Digital
-                </h1>
+            {{-- LEFT SIDE --}}
+            <div class="hidden lg:flex bg-zinc-800 text-white p-12 flex-col justify-between">
 
-                <p class="text-blue-100 leading-relaxed mb-8">
-                    Daftar untuk mulai mengakses koleksi buku digital,
-                    melakukan peminjaman, serta menikmati pengalaman
-                    perpustakaan modern yang cepat dan efisien.
-                </p>
+                <div>
+                    {{-- Brand Badge --}}
+                    <div class="inline-flex items-center gap-3 px-5 py-3 rounded-2xl bg-zinc-700 mb-8">
+                        <div class="w-10 h-10 rounded-xl bg-white text-zinc-800 flex items-center justify-center font-bold text-lg">
+                            B
+                        </div>
+
+                        <div>
+                            <h2 class="font-bold text-lg">
+                                BiblioTech
+                            </h2>
+                            <p class="text-xs text-gray-300">
+                                Smart Digital Library System
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Main Heading --}}
+                    <h1 class="text-4xl font-bold leading-tight mb-6">
+                        Mulai Perjalanan<br>
+                        Membaca dan<br>
+                        Belajar Bersama
+                    </h1>
+
+                    <p class="text-gray-300 leading-relaxed text-sm max-w-md">
+                        Daftarkan akun Anda di BiblioTech untuk mulai
+                        mengakses koleksi buku, melakukan peminjaman,
+                        memberi ulasan, dan menikmati sistem perpustakaan
+                        digital yang lebih modern.
+                    </p>
+                </div>
+
+                {{-- Footer --}}
+                <div class="pt-10 border-t border-zinc-700">
+                    <p class="text-sm text-gray-400">
+                        BiblioTech © {{ date('Y') }}
+                    </p>
+                </div>
 
             </div>
 
-            <!-- RIGHT SIDE (Register Form) -->
-            <div class="p-8 sm:p-10 flex items-center">
+            {{-- RIGHT SIDE --}}
+            <div class="p-8 sm:p-12 flex items-center">
+
                 <div class="w-full max-w-md mx-auto">
 
-                    <h2 class="text-2xl font-semibold text-[#1557b0] mb-2">
-                        Buat Akun Baru
-                    </h2>
+                    {{-- Mobile Branding --}}
+                    <div class="lg:hidden mb-8 text-center">
 
-                    <p class="text-gray-500 text-sm mb-8">
-                        Lengkapi data berikut untuk mendaftar.
-                    </p>
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-zinc-800 text-white
+                                    flex items-center justify-center text-2xl font-bold mb-4">
+                            B
+                        </div>
 
-                    <form method="POST" action="{{ route('register') }}" class="space-y-5">
+                        <h1 class="text-2xl font-bold text-zinc-800">
+                            BiblioTech
+                        </h1>
+
+                        <p class="text-sm text-gray-500 mt-1">
+                            Smart Digital Library System
+                        </p>
+
+                    </div>
+
+                    {{-- Header --}}
+                    <div class="mb-8">
+                        <h2 class="text-3xl font-bold text-zinc-800">
+                            Buat Akun Baru
+                        </h2>
+
+                        <p class="text-gray-500 mt-2">
+                            Lengkapi data berikut untuk mulai menggunakan BiblioTech.
+                        </p>
+                    </div>
+
+                    {{-- Global Errors --}}
+                    @if ($errors->any())
+                        <div class="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200">
+                            <ul class="space-y-1 text-sm text-red-600">
+                                @foreach ($errors->all() as $error)
+                                    <li>- {{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    {{-- Form --}}
+                    <form method="POST"
+                          action="{{ route('register') }}"
+                          class="space-y-5">
                         @csrf
 
-                        <!-- Nama -->
+                        {{-- Nama --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 Nama Lengkap
                             </label>
-                            <input type="text" name="nama" value="{{ old('nama') }}" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:outline-none focus:ring-2 focus:ring-[#1a73e8]
-                                focus:border-[#1a73e8] transition">
-                            @error('nama')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
+
+                            <input
+                                type="text"
+                                name="nama"
+                                value="{{ old('nama') }}"
+                                required
+                                placeholder="Masukkan nama lengkap"
+                                class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                                       focus:ring-2 focus:ring-zinc-800 focus:border-zinc-800
+                                       focus:bg-white transition">
                         </div>
 
-                        <!-- Username -->
+                        {{-- Username --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 Username
                             </label>
-                            <input type="text" name="username" value="{{ old('username') }}" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:outline-none focus:ring-2 focus:ring-[#1a73e8]
-                                focus:border-[#1a73e8] transition">
-                            @error('username')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
+
+                            <input
+                                type="text"
+                                name="username"
+                                value="{{ old('username') }}"
+                                required
+                                placeholder="Masukkan username"
+                                class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                                       focus:ring-2 focus:ring-zinc-800 focus:border-zinc-800
+                                       focus:bg-white transition">
                         </div>
 
-                        <!-- Email -->
+                        {{-- Email --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 Email
                             </label>
-                            <input type="email" name="email" value="{{ old('email') }}" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:outline-none focus:ring-2 focus:ring-[#1a73e8]
-                                focus:border-[#1a73e8] transition">
-                            @error('email')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
+
+                            <input
+                                type="email"
+                                name="email"
+                                value="{{ old('email') }}"
+                                required
+                                placeholder="Masukkan email aktif"
+                                class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                                       focus:ring-2 focus:ring-zinc-800 focus:border-zinc-800
+                                       focus:bg-white transition">
                         </div>
 
-                        <!-- Password -->
+                        {{-- Password --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 Password
                             </label>
-                            <input type="password" name="password" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:outline-none focus:ring-2 focus:ring-[#1a73e8]
-                                focus:border-[#1a73e8] transition">
-                            @error('password')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
+
+                            <input
+                                type="password"
+                                name="password"
+                                required
+                                placeholder="Masukkan password"
+                                class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                                       focus:ring-2 focus:ring-zinc-800 focus:border-zinc-800
+                                       focus:bg-white transition">
                         </div>
 
-                        <!-- Confirm Password -->
+                        {{-- Confirm Password --}}
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
                                 Konfirmasi Password
                             </label>
-                            <input type="password" name="password_confirmation" required
-                                class="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm
-                                focus:outline-none focus:ring-2 focus:ring-[#1a73e8]
-                                focus:border-[#1a73e8] transition">
-                            @error('password_confirmation')
-                                <p class="text-red-500 text-xs mt-2">{{ $message }}</p>
-                            @enderror
+
+                            <input
+                                type="password"
+                                name="password_confirmation"
+                                required
+                                placeholder="Ulangi password"
+                                class="w-full rounded-2xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm
+                                       focus:ring-2 focus:ring-zinc-800 focus:border-zinc-800
+                                       focus:bg-white transition">
                         </div>
 
-                        <!-- Submit -->
-                        <button type="submit"
-                            class="w-full py-3 rounded-xl text-white font-medium
-                            bg-gradient-to-r from-[#1557b0] to-[#1a73e8]
-                            hover:from-[#144a96] hover:to-[#1666cc]
-                            transition shadow-md">
-                            Register
+                        {{-- Button --}}
+                        <button
+                            type="submit"
+                            class="w-full py-3 rounded-2xl bg-zinc-800 text-white font-semibold
+                                   hover:bg-zinc-700 transition shadow-sm">
+                            Daftar ke BiblioTech
                         </button>
 
-                        <!-- Login link -->
-                        <div class="text-center text-sm text-gray-600">
+                        {{-- Login Link --}}
+                        <div class="text-center pt-2 text-sm text-gray-600">
                             Sudah punya akun?
                             <a href="{{ route('login') }}"
-                                class="text-[#1a73e8] hover:text-[#1557b0] font-medium transition">
-                                Login di sini
+                               class="font-semibold text-zinc-800 hover:text-zinc-700 transition">
+                                Login sekarang
                             </a>
                         </div>
 
                     </form>
 
                 </div>
+
             </div>
 
         </div>
+
     </div>
 
 </body>

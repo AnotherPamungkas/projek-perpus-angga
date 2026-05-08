@@ -75,4 +75,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Ulasan::class, 'peminjam_id');
     }
+
+    public function denda()
+    {
+        return $this->hasMany(Denda::class, 'user_id');
+    }
 }

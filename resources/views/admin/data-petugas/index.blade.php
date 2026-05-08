@@ -1,137 +1,256 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="text-2xl font-bold text-[#1557b0]">
-            Manajemen Data Petugas
-        </h2>
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+            {{-- Title --}}
+            <div>
+                <h2 class="text-xl font-bold text-[#1F1F1E]">
+                    Manajemen Data Petugas
+                </h2>
+                <p class="text-sm text-gray-500 mt-1">
+                    Kelola seluruh data petugas perpustakaan.
+                </p>
+            </div>
+
+        </div>
     </x-slot>
 
-    <div class="py-8 min-h-screen
-        bg-gradient-to-br from-[#eaf2ff] via-white to-[#d6e6ff]">
+    <div class="py-8 bg-[#F7F7F5] min-h-screen">
 
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            {{-- Alert --}}
+            {{-- Alert Success --}}
             @if(session('success'))
-            <div class="bg-blue-50 border border-blue-200 text-[#1557b0] px-4 py-3 rounded-xl shadow-sm">
-                {{ session('success') }}
-            </div>
+                <div class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-2xl shadow-sm">
+                    {{ session('success') }}
+                </div>
             @endif
 
-            <div class="bg-white shadow-sm rounded-2xl p-6 border border-blue-100">
+            {{-- Summary --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
-                {{-- Top Section --}}
-                <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6">
+                {{-- Total Petugas --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+                    <p class="text-sm text-gray-500">
+                        Total Petugas
+                    </p>
 
-                    {{-- Search --}}
-                    <form method="GET" class="flex gap-2 w-full md:w-auto">
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Cari nama / username / email..."
-                            class="w-full md:w-64 border border-gray-200 rounded-lg px-4 py-2 text-sm
-                            focus:ring-2 focus:ring-[#1a73e8] focus:border-[#1a73e8] focus:outline-none">
+                    <h3 class="text-2xl font-bold text-[#1F1F1E] mt-2">
+                        {{ $petugas->total() }}
+                    </h3>
+                </div>
 
-                        <button
-                            class="px-4 py-2 rounded-lg text-white text-sm
-                            bg-gradient-to-r from-[#1557b0] to-[#1a73e8]
-                            hover:from-[#144a96] hover:to-[#1666cc] transition">
-                            Cari
-                        </button>
-                    </form>
+                {{-- Action Section --}}
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex items-center justify-between">
 
-                    {{-- Actions --}}
-                    <div class="flex flex-wrap gap-2">
+                    <div>
+                        <p class="text-sm text-gray-500">
+                            Kelola Data
+                        </p>
+
+                        <p class="text-sm text-[#1F1F1E] mt-1">
+                            Tambahkan atau export data petugas
+                        </p>
+                    </div>
+
+                    <div class="flex gap-2">
 
                         <a href="{{ route('admin.data-petugas.create') }}"
-                            class="px-5 py-2 rounded-lg text-white text-sm shadow-sm
-                            bg-gradient-to-r from-[#1557b0] to-[#1a73e8]
-                            hover:from-[#144a96] hover:to-[#1666cc] transition">
-                            + Tambah Petugas
+                           class="px-5 py-2.5 rounded-xl
+                                  bg-[#1F1F1E] hover:bg-[#2A2A28]
+                                  text-white text-sm font-medium
+                                  shadow-sm transition">
+                            + Tambah
                         </a>
 
                         <a href="{{ route('admin.data-petugas.export') }}"
-                            class="px-5 py-2 rounded-lg text-sm border border-blue-200 text-[#1a73e8]
-                            hover:bg-blue-50 transition">
-                            Export Excel
+                           class="px-5 py-2.5 rounded-xl
+                                  border border-[#D6D3D1]
+                                  text-[#3D3D3B]
+                                  hover:bg-[#F9F9F8]
+                                  text-sm font-medium transition">
+                            Export
                         </a>
 
                     </div>
 
                 </div>
 
+            </div>
+
+            {{-- Main Card --}}
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+
+                {{-- Top Section --}}
+                <div class="px-6 py-5 border-b border-gray-100">
+
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                        <div>
+                            <h3 class="font-semibold text-[#1F1F1E]">
+                                Daftar Data Petugas
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Semua petugas yang terdaftar dalam sistem.
+                            </p>
+                        </div>
+
+                        {{-- Search --}}
+                        <form method="GET" class="flex gap-2">
+
+                            <input type="text"
+                                   name="search"
+                                   value="{{ request('search') }}"
+                                   placeholder="Cari nama petugas..."
+                                   class="w-64 border border-gray-300 rounded-xl
+                                          px-4 py-2 text-sm
+                                          focus:ring-2 focus:ring-[#3D3D3B]
+                                          focus:border-[#3D3D3B]
+                                          focus:outline-none">
+
+                            <button
+                                class="px-4 py-2 rounded-xl
+                                       bg-[#3D3D3B] hover:bg-[#2A2A28]
+                                       text-white text-sm transition">
+                                Cari
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
                 {{-- Table --}}
-                <div class="overflow-x-auto rounded-xl">
+                <div class="overflow-x-auto">
+
                     <table class="min-w-full text-sm text-left">
 
-                        <thead class="bg-gradient-to-r from-[#1557b0] to-[#1a73e8] text-white">
+                        <thead class="bg-[#1F1F1E] text-white">
                             <tr>
-                                <th class="px-4 py-3">No</th>
-                                <th class="px-4 py-3">Nama</th>
-                                <th class="px-4 py-3">Username</th>
-                                <th class="px-4 py-3">Email</th>
-                                <th class="px-4 py-3 text-center">Aksi</th>
+                                <th class="px-6 py-4 font-medium">
+                                    No
+                                </th>
+
+                                <th class="px-6 py-4 font-medium">
+                                    Nama
+                                </th>
+
+                                <th class="px-6 py-4 font-medium">
+                                    Username
+                                </th>
+
+                                <th class="px-6 py-4 font-medium">
+                                    Email
+                                </th>
+
+                                <th class="px-6 py-4 font-medium text-center">
+                                    Aksi
+                                </th>
                             </tr>
                         </thead>
 
-                        <tbody class="divide-y divide-gray-100 bg-white">
+                        <tbody class="divide-y divide-gray-100">
+
                             @forelse($petugas as $index => $item)
-                            <tr class="hover:bg-blue-50 transition">
 
-                                <td class="px-4 py-3">
-                                    {{ $petugas->firstItem() + $index }}
-                                </td>
+                                <tr class="hover:bg-gray-50 transition">
 
-                                <td class="px-4 py-3 font-medium text-gray-700">
-                                    {{ $item->nama }}
-                                </td>
+                                    {{-- No --}}
+                                    <td class="px-6 py-5 text-gray-600">
+                                        {{ $petugas->firstItem() + $index }}
+                                    </td>
 
-                                <td class="px-4 py-3 text-gray-600">
-                                    {{ $item->username }}
-                                </td>
+                                    {{-- Nama --}}
+                                    <td class="px-6 py-5">
+                                        <span class="font-semibold text-[#1F1F1E]">
+                                            {{ $item->nama }}
+                                        </span>
+                                    </td>
 
-                                <td class="px-4 py-3 text-gray-600">
-                                    {{ $item->email }}
-                                </td>
+                                    {{-- Username --}}
+                                    <td class="px-6 py-5 text-gray-600">
+                                        {{ $item->username }}
+                                    </td>
 
-                                <td class="px-4 py-3 text-center space-x-2">
+                                    {{-- Email --}}
+                                    <td class="px-6 py-5 text-gray-600">
+                                        {{ $item->email }}
+                                    </td>
 
-                                    <a href="{{ route('admin.data-petugas.edit', $item->id) }}"
-                                        class="px-3 py-1 text-xs rounded-lg text-white
-                                        bg-blue-500 hover:bg-blue-600 transition">
-                                        Edit
-                                    </a>
+                                    {{-- Aksi --}}
+                                    <td class="px-6 py-5 text-center">
 
-                                    <form action="{{ route('admin.data-petugas.destroy', $item->id) }}"
-                                        method="POST" class="inline"
-                                        onsubmit="return confirm('Yakin hapus petugas ini?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button
-                                            class="px-3 py-1 text-xs rounded-lg text-white
-                                            bg-red-500 hover:bg-red-600 transition">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                        <div class="flex justify-center gap-2">
 
-                                </td>
+                                            <a href="{{ route('admin.data-petugas.edit', $item->id) }}"
+                                               class="px-4 py-2 rounded-xl
+                                                      bg-[#3D3D3B] hover:bg-[#2A2A28]
+                                                      text-white text-xs font-medium
+                                                      transition shadow-sm">
+                                                Edit
+                                            </a>
 
-                            </tr>
+                                            <form action="{{ route('admin.data-petugas.destroy', $item->id) }}"
+                                                  method="POST"
+                                                  onsubmit="return confirm('Yakin hapus petugas ini?')">
+
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button
+                                                    class="px-4 py-2 rounded-xl
+                                                           bg-red-500 hover:bg-red-600
+                                                           text-white text-xs font-medium
+                                                           transition shadow-sm">
+                                                    Hapus
+                                                </button>
+
+                                            </form>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
                             @empty
-                            <tr>
-                                <td colspan="5" class="text-center py-6 text-gray-400">
-                                    Data petugas kosong
-                                </td>
-                            </tr>
+
+                                <tr>
+                                    <td colspan="5" class="py-16 text-center">
+
+                                        <div class="flex flex-col items-center gap-2">
+
+                                            <div class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center">
+                                                👨‍💼
+                                            </div>
+
+                                            <p class="text-gray-500 font-medium">
+                                                Tidak ada data petugas
+                                            </p>
+
+                                        </div>
+
+                                    </td>
+                                </tr>
+
                             @endforelse
+
                         </tbody>
 
                     </table>
-                </div>
 
-                {{-- Pagination --}}
-                <div class="mt-6">
-                    {{ $petugas->links() }}
                 </div>
 
             </div>
+
+            {{-- Pagination --}}
+            <div>
+                {{ $petugas->links() }}
+            </div>
+
         </div>
+
     </div>
 </x-app-layout>

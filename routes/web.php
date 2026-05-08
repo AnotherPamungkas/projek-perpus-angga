@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\RiwayatPeminjamanController;
 use App\Http\Controllers\Admin\VerifikasiBukuController;
 use App\Http\Controllers\Peminjam\BukuController;
 use App\Http\Controllers\Peminjam\DashboardController;
+use App\Http\Controllers\Peminjam\PembayaranDendaController;
 use App\Http\Controllers\Peminjam\PeminjamanBukuController;
 use App\Http\Controllers\Peminjam\PeminjamanController;
 use App\Http\Controllers\Peminjam\ProfilController;
@@ -74,6 +75,13 @@ Route::middleware(['auth'])
         Route::get('/data-kategori/edit/{id}', [DataKategoriController::class, 'edit'])->name('admin.data-kategori.edit');
         Route::put('/data-kategori/update/{id}', [DataKategoriController::class, 'update'])->name('admin.data-kategori.update');
         Route::delete('/data-kategori/delete/{id}', [DataKategoriController::class, 'destroy'])->name('admin.data-kategori.destroy');
+
+        // Manajemen verifikasi data buku
+        Route::get('/verifikasi-buku', [VerifikasiBukuController::class, 'index'])->name('admin.verifikasi-buku.index');
+        Route::get('/verifikasi-buku/{buku}', [VerifikasiBukuController::class, 'detail'])->name('admin.verifikasi-buku.detail');
+        Route::put('/verifikasi-buku/{buku}/disetujui', [VerifikasiBukuController::class, 'verify'])->name('admin.verifikasi-buku.verify');
+        Route::put('/verifikasi-buku/{buku}/ditolak', [VerifikasiBukuController::class, 'reject'])->name('admin.verifikasi-buku.reject');
+        Route::delete('/verifikasi-buku/delete/{id}', [VerifikasiBukuController::class, 'destroy'])->name('admin.verifikasi-buku.destroy');
 
         // Manajemen data buku
         Route::get('/data-buku', [DataBukuController::class, 'index'])->name('admin.data-buku.index');
@@ -186,6 +194,10 @@ Route::middleware(['auth', 'verified', 'role:peminjam'])
         Route::get('/riwayat-peminjaman/detail/{peminjaman}', [PeminjamRiwayatPeminjamanController::class, 'detail'])->name('peminjam.riwayat-peminjaman.detail');
         Route::delete('/riwayat-peminjaman/{riwayat}', [PeminjamRiwayatPeminjamanController::class, 'destroy'])->name('peminjam.riwayat-peminjaman.destroy');
 
+
+        // Manajemen Denda
+        Route::get('/pembayaran/{peminjaman}', [PembayaranDendaController::class, 'show'])->name('peminjam.pembayaran.show');
+        Route::post('/pembayaran/{peminjaman}', [PembayaranDendaController::class, 'bayar'])->name('peminjam.pembayaran.bayar');
 
         // Manajemen Ulasan
         Route::post('/ulasan', [UlasanController::class, 'store'])->name('peminjam.ulasan.store');

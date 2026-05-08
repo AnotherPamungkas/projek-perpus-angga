@@ -37,6 +37,11 @@ class PeminjamanBukuController extends Controller
 
         // 🔒 Cek apakah user sudah punya peminjaman aktif
         $peminjamanAktif = Peminjaman::where('peminjam_id', $user->id)
+            ->whereIn('status', [
+                'menunggu_validasi',
+                'dipinjam',
+                'terlambat'
+            ])
             ->whereNull('tanggal_kembali')
             ->exists();
 
@@ -62,11 +67,11 @@ class PeminjamanBukuController extends Controller
         ]);
 
         // Update status jika habis
-        if ($buku->jumlah_buku == 0) {
-            $buku->status = 'habis';
-        }
+        // if ($buku->jumlah_buku == 0) {
+        //     $buku->status = 'habis';
+        // }
 
-        $buku->save();
+        // $buku->save();
 
         return redirect()
             ->route('peminjam.riwayat-peminjaman.index')

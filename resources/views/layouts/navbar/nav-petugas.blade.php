@@ -1,104 +1,227 @@
-<nav x-data="{ open: false }" class="bg-[#09637E] shadow-lg">
+<nav x-data="{ open: false }"
+    class="bg-[#1F1F1E] shadow-sm border-b border-[#2A2A28] sticky top-0 z-50">
 
     <div class="max-w-7xl mx-auto px-6">
         <div class="flex justify-between items-center h-16">
 
-            <!-- Logo -->
-            <div class="flex items-center space-x-3">
-                <span class="text-white text-lg font-bold tracking-wide">
-                    MyLibrary
-                </span>
+            {{-- Logo --}}
+            <div class="flex items-center gap-3">
+
+                <a href="{{ route('petugas.dashboard') }}"
+                    class="flex items-center gap-2">
+
+                    <div class="w-9 h-9 rounded-xl bg-[#3D3D3B] flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">
+                            B
+                        </span>
+                    </div>
+
+                    <span class="text-white text-lg font-bold tracking-wide">
+                        BiblioTech
+                    </span>
+
+                </a>
+
             </div>
 
-            <!-- Desktop Menu -->
+            {{-- Desktop Menu --}}
             <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
 
-                <a href="{{ route('petugas.dashboard') }}" class="text-white/90 hover:text-white transition">
+                {{-- Dashboard --}}
+                <a href="{{ route('petugas.dashboard') }}"
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.dashboard')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
                     Dashboard
                 </a>
 
-                <a href="{{ route('petugas.data-kategori.index') }}" class="text-white/90 hover:text-white transition">
+                {{-- Data Kategori --}}
+                <a href="{{ route('petugas.data-kategori.index') }}"
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.data-kategori.*')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
                     Data Kategori
                 </a>
 
-                <a href="{{ route('petugas.data-buku.index') }}" class="text-white/90 hover:text-white transition">
+                {{-- Data Buku --}}
+                <a href="{{ route('petugas.data-buku.index') }}"
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.data-buku.*')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
                     Data Buku
                 </a>
 
+                {{-- Peminjaman --}}
                 <a href="{{ route('petugas.data-peminjaman.index') }}"
-                    class="text-white/90 hover:text-white transition">
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.data-peminjaman.*')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
                     Peminjaman
                 </a>
 
+                {{-- Validasi --}}
                 <a href="{{ route('petugas.validasi-peminjaman.index') }}"
-                    class="text-white/90 hover:text-white transition">
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.validasi-peminjaman.*')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
                     Validasi
                 </a>
 
-                <a href="{{ route('petugas.data-ulasan.index') }}" class="text-white/90 hover:text-white transition">
+                {{-- Ulasan --}}
+                <a href="{{ route('petugas.data-ulasan.index') }}"
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.data-ulasan.*')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
                     Ulasan
                 </a>
 
+                {{-- Riwayat --}}
                 <a href="{{ route('petugas.riwayat-peminjaman.index') }}"
-                    class="text-white/90 hover:text-white transition">
-                    Riwayat Peminjaman
+                    class="relative pb-1 transition duration-200
+                    {{ request()->routeIs('petugas.riwayat-peminjaman.*')
+                        ? 'text-white after:absolute after:left-0 after:-bottom-1 after:w-full after:h-[2px] after:bg-white'
+                        : 'text-[#D6D3D1] hover:text-white' }}">
+                    Riwayat
                 </a>
-
 
             </div>
 
-            <!-- User Dropdown -->
-            <div class="hidden md:block relative" x-data="{ userOpen: false }">
+            {{-- User Dropdown --}}
+            <div class="hidden md:block relative"
+                x-data="{ userOpen: false }">
 
                 <button @click="userOpen = !userOpen"
-                    class="flex items-center gap-2 text-white text-sm hover:text-white/80 transition">
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#2C2C2B] transition">
 
-                    <span>{{ Auth::user()->nama }}</span>
+                    <div class="w-8 h-8 rounded-full bg-[#3D3D3B] flex items-center justify-center">
+                        <span class="text-white text-sm font-semibold">
+                            {{ strtoupper(substr(Auth::user()->nama, 0, 1)) }}
+                        </span>
+                    </div>
 
-                    <!-- Arrow -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform"
-                        :class="{ 'rotate-180': userOpen }" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    <span class="text-white text-sm font-medium">
+                        Petugas
+                    </span>
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="h-4 w-4 text-white transition-transform"
+                        :class="{ 'rotate-180': userOpen }"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M19 9l-7 7-7-7" />
+
                     </svg>
+
                 </button>
 
-                <!-- Dropdown -->
-                <div x-show="userOpen" x-transition @click.away="userOpen = false"
-                    class="absolute right-0 mt-3 w-44 bg-white rounded-xl shadow-xl overflow-hidden z-50">
+                {{-- Dropdown --}}
+                <div x-show="userOpen"
+                    x-transition
+                    @click.away="userOpen = false"
+                    class="absolute right-0 mt-3 w-52 bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 z-50">
+
+                    <div class="px-4 py-3 border-b border-gray-100">
+                        <p class="font-semibold text-gray-800 text-sm">
+                            {{ Auth::user()->nama }}
+                        </p>
+                        <p class="text-xs text-gray-400">
+                            Petugas Perpustakaan
+                        </p>
+                    </div>
 
                     <a href="{{ route('profil-petugas.index') }}"
-                        class="block px-4 py-3 text-sm text-gray-700 hover:bg-[#EBF4F6] transition">
+                        class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition">
                         Profil Saya
                     </a>
 
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST"
+                        action="{{ route('logout') }}">
                         @csrf
+
                         <button type="submit"
-                            class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition">
+                            class="w-full text-left px-4 py-3 text-sm text-red-500 hover:bg-red-50 transition">
                             Logout
                         </button>
+
                     </form>
 
                 </div>
 
             </div>
 
+            {{-- Mobile Button --}}
+            <button @click="open = !open"
+                class="md:hidden text-white">
 
-            <!-- Mobile -->
-            <button @click="open = !open" class="md:hidden text-white">
-                ☰
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-6 h-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16" />
+
+                </svg>
+
             </button>
 
         </div>
     </div>
 
-    <!-- Mobile Menu -->
-    <div x-show="open" class="md:hidden bg-[#088395] px-6 py-4 space-y-3 text-white text-sm">
-        <a href="{{ route('petugas.dashboard') }}">Dashboard</a>
-        <a href="{{ route('petugas.data-buku.index') }}">Buku</a>
-        <a href="{{ route('petugas.data-peminjaman.index') }}">Peminjaman</a>
-        <a href="{{ route('petugas.validasi-peminjaman.index') }}">Validasi</a>
-        <a href="{{ route('petugas.data-ulasan.index') }}">Ulasan</a>
+    {{-- Mobile Menu --}}
+    <div x-show="open"
+        x-transition
+        class="md:hidden bg-[#2A2A28] border-t border-[#3D3D3B] px-6 py-4 space-y-2">
+
+        <a href="{{ route('petugas.dashboard') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Dashboard
+        </a>
+
+        <a href="{{ route('petugas.data-kategori.index') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Data Kategori
+        </a>
+
+        <a href="{{ route('petugas.data-buku.index') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Data Buku
+        </a>
+
+        <a href="{{ route('petugas.data-peminjaman.index') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Peminjaman
+        </a>
+
+        <a href="{{ route('petugas.validasi-peminjaman.index') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Validasi
+        </a>
+
+        <a href="{{ route('petugas.data-ulasan.index') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Ulasan
+        </a>
+
+        <a href="{{ route('petugas.riwayat-peminjaman.index') }}"
+            class="block text-[#D6D3D1] px-3 py-2 rounded-xl hover:bg-[#3D3D3B] hover:text-white transition">
+            Riwayat
+        </a>
+
     </div>
 
 </nav>
